@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bhagavad Gita · భగవద్గీత</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Marcellus&family=Inter:wght@400;500;600&family=Noto+Serif+Telugu:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#140b02; --bg2:#2a1606;
+    --gold:#e8b54d; --gold-soft:#f6dca0;
+    --cream:#fbf3e2; --muted:#bfa97e;
+    --card:rgba(255,255,255,0.045);
+    --card-strong:rgba(0,0,0,0.28);
+    --border:rgba(232,181,77,0.22);
+    --green:#6fcf83;
+    --f-en-display:"Marcellus", serif;
+    --f-en-serif:"Cormorant Garamond", serif;
+    --f-en-body:"Inter", sans-serif;
+    --f-te-serif:"Noto Serif Telugu", serif;
+    --f-te-body:"Noto Sans Telugu", sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #3a2008 0%, transparent 60%),
+      radial-gradient(circle at top,var(--bg2),var(--bg) 75%);
+    color:var(--cream); min-height:100vh; padding-bottom:70px;
+    font-family:var(--f-en-body); line-height:1.7;
+  }
+
+  /* language helpers */
+  .en,.te{display:none;}
+  body.lang-en .en{display:revert;}
+  body.lang-te .te{display:revert;}
+
+  /* ---------- NAVBAR ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;gap:18px;
+    padding:12px 22px;
+    background:linear-gradient(180deg, rgba(20,11,2,0.96), rgba(20,11,2,0.78));
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;}
+  .brand .om{font-size:26px;color:var(--gold);}
+  .brand .name{color:var(--gold-soft);letter-spacing:1px;}
+  .brand .name.en{font-family:var(--f-en-display);font-size:19px;}
+  .brand .name.te{font-family:var(--f-te-serif);font-size:19px;}
+  .nav-spacer{flex:1;}
+
+  .lang-toggle{display:inline-flex;border:1.5px solid var(--border);border-radius:50px;overflow:hidden;background:var(--card-strong);}
+  .lang-toggle button{
+    border:none;background:transparent;cursor:pointer;color:var(--muted);
+    font-family:var(--f-en-body);font-weight:600;font-size:13px;padding:8px 16px;transition:.2s;
+  }
+  .lang-toggle button.active{background:linear-gradient(135deg,var(--gold),var(--gold-soft));color:#2a1606;}
+
+  /* ---------- HEADER ---------- */
+  header{text-align:center;padding:34px 20px 26px;}
+  .om-big{font-size:50px;color:var(--gold);line-height:1;text-shadow:0 0 30px rgba(232,181,77,.35);}
+  .verse-ref{margin-top:12px;color:var(--gold);font-size:13px;letter-spacing:3px;text-transform:uppercase;}
+  .verse-title{margin-top:6px;font-size:30px;color:var(--gold-soft);}
+  .verse-title.en{font-family:var(--f-en-display);letter-spacing:1px;}
+  .verse-title.te{font-family:var(--f-te-serif);font-weight:600;}
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{max-width:940px;margin:0 auto;padding:0 22px;}
+  section{
+    margin-top:36px;background:var(--card);border:1px solid var(--border);
+    border-radius:18px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.25);
+  }
+  .section-title{
+    color:var(--gold);font-size:14px;letter-spacing:3px;text-transform:uppercase;
+    margin-bottom:20px;display:flex;align-items:center;gap:12px;
+  }
+  .section-title::before{content:"";height:1px;flex:0 0 26px;background:linear-gradient(90deg,var(--gold),transparent);}
+  .section-title::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--border),transparent);}
+  .section-title.en{font-family:var(--f-en-body);}
+  .section-title.te{font-family:var(--f-te-body);}
+
+  /* ---------- SLOKA ---------- */
+  .sloka{
+    text-align:center;font-family:var(--f-te-serif);font-weight:600;
+    font-size:30px;line-height:2.1;color:var(--gold-soft);padding:8px 0 4px;
+  }
+  .translit{
+    text-align:center;font-family:var(--f-en-serif);font-style:italic;
+    font-size:20px;color:var(--muted);margin-top:16px;
+  }
+  .divider{height:1px;margin:24px 0;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+  .meaning-label{color:var(--gold);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .meaning{font-size:19px;color:var(--cream);}
+  .meaning.en{font-family:var(--f-en-serif);font-size:22px;line-height:1.7;}
+  .meaning.te{font-family:var(--f-te-body);}
+
+  /* ---------- VIDEOS ---------- */
+  .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .video-card{background:var(--card-strong);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;}
+  .video-card h3{color:var(--gold-soft);font-size:16px;margin-bottom:14px;font-weight:500;}
+  .video-card h3.en{font-family:var(--f-en-display);letter-spacing:1px;}
+  .video-card h3.te{font-family:var(--f-te-serif);}
+  .video-card video{width:100%;border-radius:10px;background:#000;aspect-ratio:16/9;display:block;}
+  .placeholder{
+    width:100%;aspect-ratio:16/9;border:2px dashed var(--border);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;color:var(--muted);
+    font-size:14px;text-align:center;padding:16px;
+  }
+  .placeholder.te{font-family:var(--f-te-body);}
+
+  /* ---------- AUDIO ---------- */
+  .audio-box{text-align:center;}
+  .sloka-small{
+    font-family:var(--f-te-serif);font-weight:600;
+    font-size:18px;line-height:1.9;color:var(--gold-soft);margin-bottom:6px;
+  }
+  .translit-small{
+    font-family:var(--f-en-serif);font-style:italic;
+    font-size:14px;color:var(--muted);margin-bottom:18px;
+  }
+  .audio-hint{color:var(--muted);margin-bottom:18px;}
+  .audio-hint.en{font-family:var(--f-en-serif);font-size:17px;font-style:italic;}
+  .audio-hint.te{font-family:var(--f-te-body);font-size:15px;}
+  .audio-controls{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+  .btn{
+    border:none;cursor:pointer;font-family:var(--f-en-body);font-weight:600;font-size:15px;
+    padding:14px 28px;border-radius:50px;display:inline-flex;align-items:center;gap:9px;
+    color:#2a1606;background:linear-gradient(135deg,var(--gold),var(--gold-soft));
+    box-shadow:0 6px 18px rgba(232,181,77,.28);transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(232,181,77,.4);}
+  .btn:active{transform:translateY(0);}
+  .btn.secondary{background:transparent;color:var(--gold-soft);border:1.5px solid var(--gold);box-shadow:none;}
+  .btn.loop-active{background:linear-gradient(135deg,#3fae57,#7bd389);color:#06270c;border-color:transparent;box-shadow:0 6px 18px rgba(76,175,80,.35);}
+  .status{margin-top:20px;color:var(--muted);font-size:14px;min-height:20px;font-family:var(--f-en-body);}
+  .status .on{color:var(--green);font-weight:700;}
+
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:46px;}
+
+  @media(max-width:680px){
+    .video-grid{grid-template-columns:1fr;}
+    .sloka{font-size:23px;}
+    .verse-title{font-size:24px;}
+    .brand .name{display:none;}
+    section{padding:24px 20px;}
+  }
+</style>
+</head>
+<body class="lang-te">
+
+<!-- ===== NAVBAR ===== -->
+<nav class="nav">
+  <div class="brand">
+    <span class="om">ॐ</span>
+    <span class="name en">Bhagavad Gita</span>
+    <span class="name te">భగవద్గీత</span>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button id="btnEn" onclick="setLang('en')">EN</button>
+    <button id="btnTe" class="active" onclick="setLang('te')">తె</button>
+  </div>
+</nav>
+
+<header>
+  <div class="om-big">ॐ</div>
+  <div class="verse-ref en">Chapter 18 · Verse 78</div>
+  <div class="verse-ref te">అధ్యాయం 18 · శ్లోకం 78</div>
+  <div class="verse-title en">Victory &amp; Fortune</div>
+  <div class="verse-title te">విజయం, శ్రీ</div>
+</header>
+
+<div class="wrap">
+
+  <!-- SLOKA -->
+  <section>
+    <div class="section-title en">The Verse</div>
+    <div class="section-title te">శ్లోకం</div>
+    <div class="sloka">
+      యత్ర యోగేశ్వరః కృష్ణో యత్ర పార్థో ధనుర్ధరః ।<br>
+      తత్ర శ్రీర్విజయో భూతిర్ధ్రువా నీతిర్మతిర్మమ ॥
+    </div>
+    <div class="translit">
+      yatra yogeśvaraḥ kṛṣṇo yatra pārtho dhanurdharaḥ<br>
+      tatra śrīr vijayo bhūtir dhruvā nītir matir mama
+    </div>
+    <div class="divider"></div>
+    <div class="meaning-label en">Meaning</div>
+    <div class="meaning-label te">భావం (అర్థం)</div>
+    <p class="meaning en">
+      Wherever there is Krishna, the master of all yoga, and wherever there is
+      Arjuna, the supreme archer — there will surely be fortune, victory,
+      prosperity and unshakeable righteousness. This is my conviction.
+    </p>
+    <p class="meaning te">
+      ఎక్కడ యోగేశ్వరుడైన శ్రీకృష్ణుడు ఉంటాడో, ఎక్కడ ధనుర్ధారి అయిన
+      అర్జునుడు (పార్థుడు) ఉంటాడో — అక్కడ సంపద, విజయం, ఐశ్వర్యం మరియు
+      స్థిరమైన ధర్మం తప్పక ఉంటాయి. ఇదే నా దృఢమైన అభిప్రాయం.
+    </p>
+  </section>
+
+  <!-- VIDEOS -->
+  <section>
+    <div class="section-title en">Visuals</div>
+    <div class="section-title te">దృశ్యాలు</div>
+    <div class="video-grid">
+      <div class="video-card">
+        <h3 class="en">Realistic</h3>
+        <h3 class="te">వాస్తవిక దృశ్యం</h3>
+        <video controls preload="metadata">
+          <source src="assets/realistic_1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="video-card">
+        <h3 class="en">Cartoon</h3>
+        <h3 class="te">కార్టూన్ దృశ్యం</h3>
+        <video controls preload="metadata">
+          <source src="assets/cartoon_1.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIO -->
+  <section>
+    <div class="section-title en">Listen</div>
+    <div class="section-title te">శ్రవణం</div>
+    <div class="audio-box">
+      <div class="sloka-small">
+        యత్ర యోగేశ్వరః కృష్ణో యత్ర పార్థో ధనుర్ధరః ।<br>
+        తత్ర శ్రీర్విజయో భూతిర్ధ్రువా నీతిర్మతిర్మమ ॥
+      </div>
+      <div class="translit-small">
+        yatra yogeśvaraḥ kṛṣṇo yatra pārtho dhanurdharaḥ<br>
+        tatra śrīr vijayo bhūtir dhruvā nītir matir mama
+      </div>
+      <p class="audio-hint en">Play the sloka — turn on Loop to repeat it until you stop.</p>
+      <p class="audio-hint te">శ్లోకాన్ని వినండి — లూప్ ఆన్ చేస్తే మీరు ఆపే వరకు పునరావృతం అవుతుంది.</p>
+      <audio id="player" src="assets/1_audio.mp3" preload="auto"></audio>
+      <div class="audio-controls">
+        <button class="btn" id="playBtn"><span class="en">▶ Play</span><span class="te">▶ ప్లే</span></button>
+        <button class="btn secondary" id="loopBtn"><span class="en">🔁 Loop</span><span class="te">🔁 లూప్</span></button>
+        <button class="btn secondary" id="stopBtn"><span class="en">⏹ Stop</span><span class="te">⏹ ఆపు</span></button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="en">॥ Bhagavad Gita · Chapter 18, Verse 78 ॥</span>
+    <span class="te">॥ భగవద్గీత · అధ్యాయం 18, శ్లోకం 78 ॥</span>
+  </footer>
+</div>
+
+<script>
+let currentLang = 'te';
+let looping = false;
+let loopTimer = null;        // pending 2s restart timer
+const LOOP_GAP_MS = 2000;    // pause between repeats
+const $ = id => document.getElementById(id);
+const player = $('player');
+
+function setLang(lang){
+  currentLang = lang;
+  document.body.classList.toggle('lang-en', lang==='en');
+  document.body.classList.toggle('lang-te', lang==='te');
+  $('btnEn').classList.toggle('active', lang==='en');
+  $('btnTe').classList.toggle('active', lang==='te');
+  setStatus();
+}
+
+const TXT = {
+  en:{ ready:'Ready', playing:'Playing',
+       pl:'Playing · Loop <span class="on">ON</span> (until you stop)',
+       pa:'Paused · Loop <span class="on">ON</span>' },
+  te:{ ready:'సిద్ధం', playing:'ప్లే అవుతోంది',
+       pl:'ప్లే అవుతోంది · లూప్ <span class="on">ఆన్</span> (ఆపే వరకు)',
+       pa:'ఆపబడింది · లూప్ <span class="on">ఆన్</span>' }
+};
+function setStatus(){
+  const t = TXT[currentLang];
+  if(player.paused){ $('status').innerHTML = looping ? t.pa : t.ready; }
+  else{ $('status').innerHTML = looping ? t.pl : t.playing; }
+}
+function setPlayLabel(){
+  const p = !player.paused;
+  $('playBtn').querySelector('.en').textContent = p ? '⏸ Pause' : '▶ Play';
+  $('playBtn').querySelector('.te').textContent = p ? '⏸ పాజ్'  : '▶ ప్లే';
+}
+function setLoopLabel(){
+  $('loopBtn').querySelector('.en').textContent = looping ? '🔁 Loop On' : '🔁 Loop';
+  $('loopBtn').querySelector('.te').textContent = looping ? '🔁 లూప్ ఆన్' : '🔁 లూప్';
+}
+
+$('playBtn').addEventListener('click', () => { player.paused ? player.play() : player.pause(); });
+
+// Loop toggle. We replay manually on 'ended' (see below) rather than relying
+// on the native loop property, which can be unreliable for an .mp4 in <audio>.
+$('loopBtn').addEventListener('click', () => {
+  looping = !looping;
+  // NOTE: we deliberately do NOT set player.loop. The native loop property
+  // suppresses the 'ended' event and fails silently from file://. Instead we
+  // restart manually in the 'ended' handler below.
+  $('loopBtn').classList.toggle('loop-active', looping);
+  if(!looping){ clearTimeout(loopTimer); }          // cancel any pending restart
+  // Turning Loop ON should immediately start playing (and keep repeating).
+  if(looping && player.paused){ player.play().catch(()=>{}); }
+  setLoopLabel(); setStatus();
+});
+$('stopBtn').addEventListener('click', () => {
+  clearTimeout(loopTimer);
+  player.pause(); player.currentTime = 0;
+  looping = false;
+  $('loopBtn').classList.remove('loop-active');
+  setLoopLabel(); setStatus();
+});
+player.addEventListener('play',  () => { setPlayLabel(); setStatus(); });
+player.addEventListener('pause', () => { setPlayLabel(); setStatus(); });
+player.addEventListener('ended', () => {
+  if(looping){
+    // wait 2 seconds, then restart — keeps repeating until the user stops
+    clearTimeout(loopTimer);
+    loopTimer = setTimeout(() => {
+      if(!looping) return;                 // user stopped during the gap
+      try {
+        player.currentTime = 0;
+        const p = player.play();
+        if(p && p.catch){ p.catch(() => { player.load(); player.play().catch(()=>{}); }); }
+      } catch(e){
+        player.load(); player.play().catch(()=>{});
+      }
+    }, LOOP_GAP_MS);
+  }
+  setPlayLabel(); setStatus();
+});
+
+setLang('te');
+setLoopLabel();
+</script>
+</body>
+</html>
