@@ -11,9 +11,11 @@
 <meta property="og:description" content="Sloka, visuals and audio practice for Bhagavad Gita 18.78." />
 <meta property="og:url" content="https://aikaryashala.com/bhagavadgita/" />
 <meta property="og:image" content="https://aikaryashala.com/bhagavadgita/assets/og_image.jpeg" />
+<meta property="og:image:secure_url" content="https://aikaryashala.com/bhagavadgita/assets/og_image.jpeg" />
 <meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:width" content="1535" />
 <meta property="og:image:height" content="1024" />
+<meta property="og:image:alt" content="Bhagavad Gita 18.78 — Krishna and Arjuna" />
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image" />
@@ -149,6 +151,7 @@
     color:#2a1606;background:linear-gradient(135deg,var(--gold),var(--gold-soft));
     box-shadow:0 6px 18px rgba(232,181,77,.28);transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
   }
+  .btn .te{font-family:var(--f-te-body);font-weight:600;letter-spacing:.2px;}
   .btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(232,181,77,.4);}
   .btn:active{transform:translateY(0);}
   .btn.secondary{background:transparent;color:var(--gold-soft);border:1.5px solid var(--gold);box-shadow:none;}
@@ -174,7 +177,8 @@
     font-size:clamp(30px,5.2vw,60px);line-height:2;color:var(--gold-soft);
     text-shadow:0 0 50px rgba(232,181,77,.3);
   }
-  #stopPracticeBtn{font-size:18px;padding:16px 40px;}
+  #stopPracticeBtn{font-size:18px;padding:15px 38px;max-width:90vw;text-align:center;line-height:1.4;border-radius:40px;}
+  body.lang-te #stopPracticeBtn{font-size:16px;}
 
   @media(max-width:680px){
     .video-grid{grid-template-columns:1fr;}
@@ -291,7 +295,7 @@
     తత్ర శ్రీర్విజయో భూతిర్ధ్రువా నీతిర్మతిర్మమ ॥
   </div>
   <button class="btn" id="stopPracticeBtn">
-    <span class="en">⏹ Stop</span><span class="te">⏹ ఆపు</span>
+    <span class="en">⏹ Stop Practice</span><span class="te">⏹ నెమ్మదిగా సాధన నుంచి బయటకు రండి</span>
   </button>
 </div>
 
@@ -312,45 +316,76 @@ function setLang(lang){
 }
 
 const overlay = $('overlay');
-let practicing = false;
+let practicing = false;   // overlay open + looping
+let stopping   = false;   // stop requested — finish current loop, then exit
 
-function updatePracticeBtn(){
-  $('practiceBtn').querySelector('.en').textContent = practicing ? '⏹ Stop' : '▶ Practice';
-  $('practiceBtn').querySelector('.te').textContent = practicing ? '⏹ ఆపు'  : '▶ సాధన';
-  $('practiceBtn').classList.toggle('loop-active', practicing);
+const LABELS = {
+  idle:      { en:'▶ Practice',       te:'▶ సాధన' },
+  practicing:{ en:'⏹ Stop Practice',  te:'⏹ నెమ్మదిగా సాధన నుంచి బయటకు రండి' },
+  stopping:  { en:'⏳ Finishing…',     te:'⏳ పూర్తవుతోంది…' }
+};
+function updateButtons(){
+  const state = stopping ? 'stopping' : (practicing ? 'practicing' : 'idle');
+  const l = LABELS[state];
+  for(const id of ['practiceBtn','stopPracticeBtn']){
+    const b = $(id);
+    b.querySelector('.en').textContent = l.en;
+    b.querySelector('.te').textContent = l.te;
+    b.classList.toggle('loop-active', state === 'practicing');
+  }
 }
 
 // Start: maximize the sloka full-screen and loop the audio.
 function startPractice(){
-  practicing = true; looping = true;
+  practicing = true; stopping = false; looping = true;
   document.body.classList.add('practicing');
   overlay.classList.add('show');
   try{ player.currentTime = 0; }catch(e){}
   player.play().catch(()=>{});
-  updatePracticeBtn();
+  updateButtons();
 }
 
-// Stop: close the overlay, stop the audio, back to normal.
-function stopPractice(){
-  practicing = false; looping = false;
+// Request stop: DON'T cut off mid-sloka. Stop scheduling new loops, let the
+// current recitation finish, then leave. If we're already in the gap between
+// loops (audio paused), the loop is complete so we exit right away.
+function requestStop(){
+  if(!practicing || stopping) return;
+  stopping = true; looping = false;
+  clearTimeout(loopTimer);             // cancel any pending gap restart
+  if(player.paused){ exitPractice(); } // between loops -> already finished
+  else { updateButtons(); }            // show "Finishing…" until it ends
+}
+
+// Exit: close the overlay, stop audio, back to the main page.
+function exitPractice(){
+  practicing = false; stopping = false; looping = false;
   clearTimeout(loopTimer);
   overlay.classList.remove('show');
   document.body.classList.remove('practicing');
   player.pause();
   try{ player.currentTime = 0; }catch(e){}
-  updatePracticeBtn();
+  updateButtons();
 }
 
-$('practiceBtn').addEventListener('click', () => practicing ? stopPractice() : startPractice());
-$('stopPracticeBtn').addEventListener('click', stopPractice);
-document.addEventListener('keydown', e => { if(e.key === 'Escape' && practicing) stopPractice(); });
+function onPracticeButton(){
+  if(!practicing)      startPractice();
+  else if(!stopping)   requestStop();   // first press -> finish loop then exit
+  else                 exitPractice();  // press again while finishing -> exit now
+}
+$('practiceBtn').addEventListener('click', onPracticeButton);
+$('stopPracticeBtn').addEventListener('click', onPracticeButton);
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape' || !practicing) return;
+  stopping ? exitPractice() : requestStop();
+});
 
-// When the sloka ends and Practice is on, wait 2s then replay — until stopped.
 player.addEventListener('ended', () => {
+  if(stopping){ exitPractice(); return; }   // finished the loop -> now leave
   if(!looping) return;
+  // wait 2s, then replay — keeps repeating until the user stops
   clearTimeout(loopTimer);
   loopTimer = setTimeout(() => {
-    if(!looping) return;                 // user stopped during the gap
+    if(!looping) return;
     try {
       player.currentTime = 0;
       const p = player.play();
@@ -362,7 +397,7 @@ player.addEventListener('ended', () => {
 });
 
 setLang('te');
-updatePracticeBtn();
+updateButtons();
 </script>
 </body>
 </html>
