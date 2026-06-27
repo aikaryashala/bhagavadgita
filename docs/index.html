@@ -180,12 +180,57 @@
   #stopPracticeBtn{font-size:18px;padding:15px 38px;max-width:90vw;text-align:center;line-height:1.4;border-radius:40px;}
   body.lang-te #stopPracticeBtn{font-size:16px;}
 
+  /* ---------- RESPONSIVE: Tablet (≤768px) ---------- */
+  @media(max-width:768px){
+    .wrap{padding:0 18px;}
+    .om-big{font-size:42px;}
+    .verse-title{font-size:26px;}
+    .sloka{font-size:26px;line-height:2;}
+    .translit{font-size:18px;}
+    .meaning.en{font-size:19px;}
+    section{padding:26px 20px;}
+  }
+
+  /* ---------- RESPONSIVE: Mobile (≤680px) ---------- */
   @media(max-width:680px){
     .video-grid{grid-template-columns:1fr;}
-    .sloka{font-size:23px;}
-    .verse-title{font-size:24px;}
+    .sloka{font-size:21px;line-height:1.9;}
+    .translit{font-size:15px;}
+    .verse-title{font-size:22px;}
+    .meaning.en{font-size:17px;line-height:1.65;}
     .brand .name{display:none;}
-    section{padding:24px 20px;}
+    section{padding:20px 16px;}
+    .wrap{padding:0 14px;}
+    .om-big{font-size:36px;}
+    header{padding:26px 14px 20px;}
+    .btn{padding:12px 22px;font-size:14px;}
+    .audio-controls{gap:12px;}
+    .section-title{font-size:12px;letter-spacing:2px;gap:8px;}
+    .section-title::before{flex:0 0 18px;}
+    .sloka-small{font-size:16px;line-height:1.8;}
+    .practice-overlay{padding:20px;gap:28px;}
+    #stopPracticeBtn{font-size:15px;padding:13px 28px;}
+  }
+
+  /* ---------- RESPONSIVE: Small Mobile (≤420px) ---------- */
+  @media(max-width:420px){
+    .nav{padding:10px 12px;gap:10px;}
+    .brand .om{font-size:22px;}
+    .lang-toggle button{padding:7px 11px;font-size:12px;}
+    .om-big{font-size:30px;}
+    .verse-title{font-size:19px;}
+    header{padding:20px 12px 16px;}
+    .sloka{font-size:18px;line-height:1.8;}
+    .translit{font-size:13px;margin-top:12px;}
+    .meaning.en,.meaning.te{font-size:15px;}
+    section{padding:16px 12px;border-radius:14px;margin-top:24px;}
+    .wrap{padding:0 10px;}
+    .btn{padding:11px 18px;font-size:13px;}
+    .sloka-small{font-size:14px;}
+    .section-title{font-size:11px;letter-spacing:1.5px;}
+    .video-card h3{font-size:14px;margin-bottom:10px;}
+    .practice-overlay{padding:16px;gap:20px;}
+    #stopPracticeBtn{font-size:14px;padding:12px 22px;}
   }
 </style>
 </head>
