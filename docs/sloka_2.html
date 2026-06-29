@@ -147,6 +147,7 @@
   .btn .te{font-family:var(--f-te-body);font-weight:600;letter-spacing:.2px;}
   .btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(232,181,77,.4);}
   .btn:active{transform:translateY(0);}
+  .btn:disabled{cursor:not-allowed;opacity:.65;}
   .btn.secondary{background:transparent;color:var(--gold-soft);border:1.5px solid var(--gold);box-shadow:none;}
   .btn.loop-active{background:linear-gradient(135deg,#3fae57,#7bd389);color:#06270c;border-color:transparent;box-shadow:0 6px 18px rgba(76,175,80,.35);}
   .status{margin-top:20px;color:var(--muted);font-size:14px;min-height:20px;font-family:var(--f-en-body);}
@@ -376,6 +377,7 @@ function updateButtons(){
     b.querySelector('.en').textContent = l.en;
     b.querySelector('.te').textContent = l.te;
     b.classList.toggle('loop-active', state === 'practicing');
+    b.disabled = state === 'stopping';
   }
 }
 
@@ -409,7 +411,6 @@ function exitPractice(){
 function onPracticeButton(){
   if(!practicing)      startPractice();
   else if(!stopping)   requestStop();
-  else                 exitPractice();
 }
 $('practiceBtn').addEventListener('click', onPracticeButton);
 $('stopPracticeBtn').addEventListener('click', onPracticeButton);
