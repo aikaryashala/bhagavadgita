@@ -7,12 +7,13 @@
 <meta name="description" content="Bhagavad Gita Chapter 2, Verse 47 — Karmanye Vadhikaraste. Sloka and audio practice in Telugu and English." />
 <meta name="robots" content="index, follow" />
 <meta name="theme-color" content="#140b02" />
+<meta name="color-scheme" content="dark" />
 <link rel="canonical" href="https://aikaryashala.com/bhagavadgita/sloka_2.html" />
 
 <!-- ===== Open Graph ===== -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Bhagavad Gita · భగవద్గీత — Chapter 2, Verse 47" />
-<meta property="og:description" content="Sloka, visuals and audio practice for Bhagavad Gita 2.47." />
+<meta property="og:description" content="Sloka and audio practice for Bhagavad Gita 2.47." />
 <meta property="og:url" content="https://aikaryashala.com/bhagavadgita/sloka_2.html" />
 <meta property="og:image" content="https://aikaryashala.com/bhagavadgita/assets/og_image.jpeg" />
 <meta property="og:image:secure_url" content="https://aikaryashala.com/bhagavadgita/assets/og_image.jpeg" />
@@ -227,6 +228,19 @@
     .practice-overlay{padding:16px;gap:20px;}
     #stopPracticeBtn{font-size:14px;padding:12px 22px;}
   }
+
+  /* ---------- OVERFLOW SAFETY ---------- */
+  .sloka,.translit,.meaning,.sloka-small{overflow-wrap:break-word;}
+
+  /* ---------- FOCUS VISIBLE (keyboard a11y) ---------- */
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+  .lang-toggle button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;}
+
+  /* ---------- REDUCED MOTION ---------- */
+  @media(prefers-reduced-motion:reduce){
+    .practice-overlay{animation:none;}
+    .btn{transition:none;}
+  }
 </style>
 </head>
 <body class="lang-te">
@@ -291,7 +305,9 @@
         కర్మణ్యేవాధికారస్తే మా ఫలేషు కదాచన ।<br>
         మా కర్మఫలహేతుర్భూర్మా తే సఙ్గోఽస్త్వకర్మణి ॥
       </div>
-      <audio id="player" src="assets/2_audio.mp3" preload="auto"></audio>
+      <audio id="player" preload="auto">
+        <source src="assets/2_audio.mp3" type="audio/mpeg">
+      </audio>
       <div class="audio-controls">
         <button class="btn" id="practiceBtn">
           <span class="en">▶ Practice</span><span class="te">▶ సాధన</span>
